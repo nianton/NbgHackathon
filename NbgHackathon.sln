@@ -7,13 +7,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NbgHackathon.Web", "NbgHack
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NbgHackathon.Web.Tests", "NbgHackathon.Web.Tests\NbgHackathon.Web.Tests.csproj", "{BE71F2FF-5F39-4C60-B119-C88CB6DC2A5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NbgHackathon.Passport", "NbgHackathon.Passport\NbgHackathon.Passport.csproj", "{9A217FFC-B0C6-4906-AE03-DD952A058A3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NbgHackathon.Passport", "NbgHackathon.Passport\NbgHackathon.Passport.csproj", "{9A217FFC-B0C6-4906-AE03-DD952A058A3F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NbgHackathon.Models", "NbgHackathon.Models\NbgHackathon.Models.csproj", "{93F9C841-BA1C-46DD-912E-3613A7FD64DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NbgHackathon.Emotion", "NbgHackathon.Emotion\NbgHackathon.Emotion.csproj", "{797435F4-FC71-4909-A8C8-BBD45764FF34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NbgHackathon.Emotion", "NbgHackathon.Emotion\NbgHackathon.Emotion.csproj", "{797435F4-FC71-4909-A8C8-BBD45764FF34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NbgHackathon.ImageCompare", "NbgHackathon.ImageCompare\NbgHackathon.ImageCompare.csproj", "{B6F1D0E4-90F2-4E5A-94D9-08222CE5D4A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NbgHackathon.ImageCompare", "NbgHackathon.ImageCompare\NbgHackathon.ImageCompare.csproj", "{B6F1D0E4-90F2-4E5A-94D9-08222CE5D4A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NbgHackathon.Bot", "NbgHackathon.Bot\NbgHackathon.Bot.csproj", "{1EA14177-C034-4B96-8543-A3E251B230A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{B6F1D0E4-90F2-4E5A-94D9-08222CE5D4A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6F1D0E4-90F2-4E5A-94D9-08222CE5D4A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6F1D0E4-90F2-4E5A-94D9-08222CE5D4A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EA14177-C034-4B96-8543-A3E251B230A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EA14177-C034-4B96-8543-A3E251B230A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EA14177-C034-4B96-8543-A3E251B230A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EA14177-C034-4B96-8543-A3E251B230A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
