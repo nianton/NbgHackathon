@@ -46,6 +46,8 @@ namespace NbgHackathon.Bot.Dialogs
                         await StorePassportImage(responseMessage);
                         await context.Forward<object>(new SelfieCaptureDialog(), null, context.MakeMessage());
                     }
+
+                    await context.PostAsync("Η φωτογραφία δεν ήταν έγγυρη");
                 }
             } 
             else
