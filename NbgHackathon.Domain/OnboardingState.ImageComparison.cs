@@ -4,18 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NbgHackathon.Models
+namespace NbgHackathon.Domain
 {
     public partial class OnboardingState
     {
-        public void SetRequestedEmotion(/* parameters will go here */)
+        public void SetImageComparisonState()
         {
-
-        }
-
-        public void SetEmotionResult()
-        {
-
+            // TODO: Set passport validation / state / info
         }
     }
 }

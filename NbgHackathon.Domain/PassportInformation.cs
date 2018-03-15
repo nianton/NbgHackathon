@@ -2,7 +2,7 @@
 
 using System;
 
-namespace NbgHackathon.Models
+namespace NbgHackathon.Domain
 {
     public class PassportInformation
     {
@@ -11,7 +11,8 @@ namespace NbgHackathon.Models
         public DateTime DateOfBirth { get; set; }
         public DateTime ExpirationDate { get; set; }
         public string Nationality { get; set; }
+        public string IssuingState { get; set; }
         public string PassportNumber { get; set; }
-        // TODO: More properties
+        public string Gender { get; set; }
     }
 }

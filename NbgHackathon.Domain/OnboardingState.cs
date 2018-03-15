@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NbgHackathon.Models
+namespace NbgHackathon.Domain
 {
     public partial class OnboardingState
     {
@@ -27,7 +27,17 @@ namespace NbgHackathon.Models
         public PassportInformation PassportInfo { get; private set; }
         public PassportValidationState PassportValidation { get; private set; }
         public EmotionValidationState EmotionValidation { get; private set; }
-        public EmotionScores EmotionScores { get; private set; }        
+        public EmotionScores EmotionScores { get; private set; }
+        public FaceEmotion? RequestedEmotion { get; private set; }
+
+        public void Reset()
+        {
+            PassportInfo = null;
+            PassportValidation = PassportValidationState.None;
+            RequestedEmotion = null;
+            EmotionScores = null;
+            EmotionValidation = EmotionValidationState.None;
+        }
 
         internal static OnboardingState Create(DynamicTableEntity entity)
         {
@@ -39,9 +49,10 @@ namespace NbgHackathon.Models
                 CreatedAt = entity.Properties[nameof(CreatedAt)].DateTimeOffsetValue.Value,
                 UpdatedAt = entity.Properties[nameof(UpdatedAt)].DateTimeOffsetValue.Value,
                 PassportValidation = entity.Properties.ReadEnum<PassportValidationState>(nameof(PassportValidation)).GetValueOrDefault(),
-                PassportInfo = entity.Properties.ReadObject<PassportInformation>(nameof(PassportInformation)),
+                PassportInfo = entity.Properties.ReadObject<PassportInformation>(nameof(PassportInfo)),
                 EmotionValidation = entity.Properties.ReadEnum<EmotionValidationState>(nameof(EmotionValidation)).GetValueOrDefault(),
-                EmotionScores = entity.Properties.ReadObject<EmotionScores>(nameof(PassportInformation))
+                EmotionScores = entity.Properties.ReadObject<EmotionScores>(nameof(EmotionScores)),
+                RequestedEmotion = entity.Properties.ReadEnum<FaceEmotion>(nameof(RequestedEmotion))
             };
 
             return model;

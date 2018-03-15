@@ -98,7 +98,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domains\ModelTests.cs" />
+    <Compile Include="DomainTests\ModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="Controllers\ValuesControllerTest.cs" />
@@ -110,9 +110,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NbgHackathon.Models\NbgHackathon.Models.csproj">
+    <ProjectReference Include="..\NbgHackathon.Domain\NbgHackathon.Domain.csproj">
       <Project>{93F9C841-BA1C-46DD-912E-3613A7FD64DE}</Project>
-      <Name>NbgHackathon.Models</Name>
+      <Name>NbgHackathon.Domain</Name>
     </ProjectReference>
     <ProjectReference Include="..\NbgHackathon.Web\NbgHackathon.Web.csproj">
       <Project>{793CD8A9-A585-4876-A0DE-B97A16312EB7}</Project>

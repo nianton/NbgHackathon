@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NbgHackathon.Models
+namespace NbgHackathon.Domain
 {
     public partial class OnboardingState
     {
@@ -19,6 +19,7 @@ namespace NbgHackathon.Models
                 throw new InvalidOperationException("PassportInfo is required");
 
             PassportInfo = passportInfo;
+            UpdatedAt = DateTimeOffset.Now;
         }
     }
 }

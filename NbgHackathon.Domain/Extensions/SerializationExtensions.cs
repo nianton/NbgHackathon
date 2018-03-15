@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NbgHackathon.Models
+namespace NbgHackathon.Domain
 {
     internal static class SerializationExtensions
     {

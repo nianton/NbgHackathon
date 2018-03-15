@@ -7,8 +7,8 @@
     <ProjectGuid>{93F9C841-BA1C-46DD-912E-3613A7FD64DE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NbgHackathon.Models</RootNamespace>
-    <AssemblyName>NbgHackathon.Models</AssemblyName>
+    <RootNamespace>NbgHackathon.Domain</RootNamespace>
+    <AssemblyName>NbgHackathon.Domain</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -53,6 +53,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="EmotionScores.cs" />
     <Compile Include="Extensions\SerializationExtensions.cs" />
+    <Compile Include="FaceEmotion.cs" />
     <Compile Include="IOnboardingRepository.cs" />
     <Compile Include="OnboardingState.Emotion.cs" />
     <Compile Include="OnboardingState.ImageComparison.cs" />

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Configuration;
 
-namespace NbgHackathon.Models
+namespace NbgHackathon.Domain
 {
     public static class ServiceLocator
     {

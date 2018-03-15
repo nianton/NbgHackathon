@@ -254,9 +254,9 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NbgHackathon.Models\NbgHackathon.Models.csproj">
+    <ProjectReference Include="..\NbgHackathon.Domain\NbgHackathon.Domain.csproj">
       <Project>{93f9c841-ba1c-46dd-912e-3613a7fd64de}</Project>
-      <Name>NbgHackathon.Models</Name>
+      <Name>NbgHackathon.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

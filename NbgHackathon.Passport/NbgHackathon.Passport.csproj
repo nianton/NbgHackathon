@@ -6,7 +6,7 @@
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.6" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NbgHackathon.Models\NbgHackathon.Models.csproj" />
+    <ProjectReference Include="..\NbgHackathon.Domain\NbgHackathon.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
