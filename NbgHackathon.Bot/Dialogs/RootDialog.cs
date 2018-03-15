@@ -19,13 +19,10 @@ namespace NbgHackathon.Bot.Dialogs
         {
             var activity = await result as Activity;
 
-            // calculate something for us to return
-            int length = (activity.Text ?? string.Empty).Length;
-
             // return our reply to the user
-            await context.PostAsync($"You sent {activity.Text} which was {length} characters");
+            await context.PostAsync($"Γειά σας!");
 
-            context.Wait(MessageReceivedAsync);
+            await context.Forward<object>(new LegalEnityDialog(), MessageReceivedAsync, activity);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace NbgHackathon.Bot.Dialogs
 
             // TODO: Put logic for handling user message here
 
-            context.Wait(MessageReceivedAsync);
+            await context.Forward<object>(new PassportCaptureDialog(), MessageReceivedAsync, activity);
         }
     }
 }
