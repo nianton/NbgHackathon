@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace NbgHackathon.Models
 {
-    public enum PassportValidationState
+    public enum EmotionValidationState
     {
         None,        
-        MrzNotRecognized,
-        PassportExpired,
-        PhotoNotLocated,
+        FaceNotFound,
+        EmotionNotMatched,
         Valid
     }
 }

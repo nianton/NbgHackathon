@@ -8,9 +8,17 @@ namespace NbgHackathon.Models
 {
     public partial class OnboardingState
     {
-        public void SetPassportState(/* parameters will go here */)
+        public void SetPassportState(PassportValidationState validation, PassportInformation passportInfo = null)
         {
+            PassportValidation = validation;
 
+            var isInfoRequired = PassportValidation == PassportValidationState.PassportExpired 
+                || PassportValidation == PassportValidationState.Valid;
+
+            if (isInfoRequired && passportInfo == null)
+                throw new InvalidOperationException("PassportInfo is required");
+
+            PassportInfo = passportInfo;
         }
     }
 }

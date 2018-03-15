@@ -9,33 +9,42 @@ namespace NbgHackathon.Models
 {
     public partial class OnboardingState
     {
-        public OnboardingState()
-        {
+        private OnboardingState()
+        { }
 
+        public OnboardingState(string email)
+        {
+            Id = Guid.NewGuid();
+            UserEmail = email;
+            CreatedAt = UpdatedAt = DateTimeOffset.Now;
         }
 
         public Guid Id { get; private set; }
-        protected string ETag { get; private set; }
-        public string UserId { get; private set; }
+        public string ETag { get; private set; }
         public string UserEmail { get; private set; }
         public DateTimeOffset CreatedAt { get; private set; }
         public DateTimeOffset UpdatedAt { get; private set; }
         public PassportInformation PassportInfo { get; private set; }
-        public PassportInformation PassportValidation { get; private set; }
-        
-        public void SetImageComparisonState()
-        {
-
-        }
-
-        public void SetImageEmotionState()
-        {
-
-        }
+        public PassportValidationState PassportValidation { get; private set; }
+        public EmotionValidationState EmotionValidation { get; private set; }
+        public EmotionScores EmotionScores { get; private set; }        
 
         internal static OnboardingState Create(DynamicTableEntity entity)
         {
-            return new OnboardingState();
+            var model = new OnboardingState()
+            {
+                ETag = entity.ETag,
+                Id = entity.Properties[nameof(Id)].GuidValue.Value,
+                UserEmail = entity.Properties[nameof(UserEmail)].StringValue,
+                CreatedAt = entity.Properties[nameof(CreatedAt)].DateTimeOffsetValue.Value,
+                UpdatedAt = entity.Properties[nameof(UpdatedAt)].DateTimeOffsetValue.Value,
+                PassportValidation = entity.Properties.ReadEnum<PassportValidationState>(nameof(PassportValidation)).GetValueOrDefault(),
+                PassportInfo = entity.Properties.ReadObject<PassportInformation>(nameof(PassportInformation)),
+                EmotionValidation = entity.Properties.ReadEnum<EmotionValidationState>(nameof(EmotionValidation)).GetValueOrDefault(),
+                EmotionScores = entity.Properties.ReadObject<EmotionScores>(nameof(PassportInformation))
+            };
+
+            return model;
         }
     }
 }

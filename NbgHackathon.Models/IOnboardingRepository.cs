@@ -10,10 +10,12 @@ namespace NbgHackathon.Models
     {
         Task<OnboardingState> Get(Guid id);
 
+        Task<OnboardingState> GetOrCreate(string email);
+
         Task<OnboardingState> Update(OnboardingState state);
 
-        Task Delete(Guid id);
+        Task Delete(OnboardingState state);
 
-        Task<IList<OnboardingState>> GetAll(int page = 1, int itemsPerPage = 50);
+        Task<IList<OnboardingState>> GetAll(int itemsPerPage = 50);
     }
 }

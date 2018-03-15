@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace NbgHackathon.Models
 {
-    public enum PassportValidationState
+    public partial class OnboardingState
     {
-        None,        
-        MrzNotRecognized,
-        PassportExpired,
-        PhotoNotLocated,
-        Valid
+        public void SetImageComparisonState()
+        {
+
+        }
     }
 }
