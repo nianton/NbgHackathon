@@ -36,7 +36,7 @@ namespace NbgHackathon.Domain
             return ToModel(entity);
         }
 
-        public async Task<OnboardingState> GetOrCreate(string email)
+        public async Task<OnboardingState> GetOrCreate(string email, string botSessionId)
         {
             var query = new TableQuery()
                 .Where(TableQuery.GenerateFilterCondition(nameof(OnboardingState.UserEmail), QueryComparisons.Equal, email));
@@ -47,7 +47,7 @@ namespace NbgHackathon.Domain
                 return ToModel(existingEntity);
             }
 
-            var model = new OnboardingState(email);
+            var model = new OnboardingState(email, botSessionId);
             var entity = ToEntity(model);
             var insertOperation = TableOperation.Insert(entity);
             var insertResult = await table.ExecuteAsync(insertOperation);
