@@ -24,8 +24,8 @@ namespace NbgHackathon.Bot.Dialogs
             if ((activity.Text != null) && (activity.Text.Trim().Length > 0) && IsValidEmail(activity.Text))
             {
                 //Persist session using Domain Model
-                //var repo = Conversation.Container.Resolve<IOnboardingRepository>();
-                //var persistantState = await repo.GetOrCreate(activity.Text);
+                var repo = Conversation.Container.Resolve<IOnboardingRepository>();
+                var persistantState = await repo.GetOrCreate(activity.Text);
 
                 context.Call(new LegalEnityDialog(), null);
             }
