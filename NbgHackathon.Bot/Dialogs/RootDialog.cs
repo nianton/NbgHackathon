@@ -20,9 +20,9 @@ namespace NbgHackathon.Bot.Dialogs
             var activity = await result as Activity;
 
             // return our reply to the user
-            await context.PostAsync($"Γειά σας!");
+            await context.PostAsync($"Γειά σου, ποιο είναι το όνομα σου;");
 
-            await context.Forward<object>(new LegalEnityDialog(), MessageReceivedAsync, activity);
+            context.Call(new NameDialog(), null);
         }
     }
 }

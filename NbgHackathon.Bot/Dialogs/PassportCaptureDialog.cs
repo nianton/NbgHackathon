@@ -22,18 +22,17 @@ namespace NbgHackathon.Bot.Dialogs
         {
             var message = await result as IMessageActivity;
 
-            if (message.Attachments != null && message.Attachments.Any())
+            var image = await Helpers.GetImage(message);
+
+            if (image == null)
             {
-
-                var image = await Helpers.GetImage(message);
-
                 //await context.PostAsync($"Attachment of {attachment.ContentType} type and size of {contentLenghtBytes} bytes received.");
 
                 if (Helpers.IsValidImage(image))
                 {
                     await Helpers.StoreImage(image, Helpers.Passport);
 
-                    await context.Forward<object>(new SelfieCaptureDialog(), this.MessageReceivedAsync, message);
+                    context.Call(new SelfieCaptureDialog(), this.MessageReceivedAsync);
                 }
 
                 await context.PostAsync("Η φωτογραφία δεν ήταν έγγυρη");

@@ -14,6 +14,7 @@ namespace NbgHackathon.Bot
     {
         public const string Passport = "Passport";
         public const string Selfie = "Selfie";
+        public const string UserNameKey = "UserNameKey";
 
         public static async Task<Stream> GetImage(IMessageActivity message)
         {
