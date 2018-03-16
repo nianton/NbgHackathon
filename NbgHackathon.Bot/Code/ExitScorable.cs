@@ -41,7 +41,7 @@ namespace NbgHackathon.Bot
             {
                 var exitDialog = new ExitDialog();
 
-                this.task.Call(exitDialog, null);
+                this.task.Call(exitDialog, exitDialog.MessageReceivedAsync);
 
                 await this.task.PollAsync(token);
             }

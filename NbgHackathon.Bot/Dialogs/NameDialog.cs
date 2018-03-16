@@ -29,7 +29,7 @@ namespace NbgHackathon.Bot.Dialogs
 
                 await context.PostAsync($"Θα μου δώσεις το email σου?");
 
-                context.Call(new EmailDialog(), null);
+                context.Call(new EmailDialog(), MessageReceivedAsync);
             }
             else
             {

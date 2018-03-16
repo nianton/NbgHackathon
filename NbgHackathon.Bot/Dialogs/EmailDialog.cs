@@ -25,9 +25,9 @@ namespace NbgHackathon.Bot.Dialogs
             {
                 //Persist session using Domain Model
                 var repo = Conversation.Container.Resolve<IOnboardingRepository>();
-                var persistantState = await repo.GetOrCreate(activity.Text);
+                var persistantState = await repo.GetOrCreate(activity.Text, "");
 
-                context.Call(new LegalEnityDialog(), null);
+                context.Call(new LegalEnityDialog(), MessageReceivedAsync);
             }
             else
             {

@@ -39,14 +39,15 @@ namespace NbgHackathon.Bot.Dialogs
                 switch (option as string)
                 {
                     case IndividualOption:
-                        context.Call(new PassportCaptureDialog(), null);
+                        await context.PostAsync("Φανταστικά! Θα χρειαστούμε το διαβατήριο σου. Ανέβασε ή τράβα φωτογραφία! Πρόσεχε, να είναι έγκυρο όμως!");
+                        context.Call(new PassportCaptureDialog(), MessageReceivedAsync);
                         break;
 
                     case CompanyOption:
                         await context.PostAsync(
                             $"{context.UserData.GetValue<string>(Helpers.UserNameKey)}, θα σε ενημερώσουμε με e-mail για το τι χρειαζόμαστε για να έρθεις στη παρέα μας.");
                         //Send email to admin with name and email
-                        context.Call(new ExitDialog(), null);
+                        context.Call(new ExitDialog(), MessageReceivedAsync);
                         break;
                 }
             }
@@ -56,6 +57,12 @@ namespace NbgHackathon.Bot.Dialogs
 
                 this.ShowOptions(context);
             }
+        }
+
+        private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
+        {
+            this.ShowOptions(context);
+            context.Wait(MessageReceivedAsync);
         }
     }
 }

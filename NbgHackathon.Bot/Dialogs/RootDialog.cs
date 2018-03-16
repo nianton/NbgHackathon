@@ -22,7 +22,7 @@ namespace NbgHackathon.Bot.Dialogs
             // return our reply to the user
             await context.PostAsync($"Γειά σου, ποιο είναι το όνομα σου;");
 
-            context.Call(new NameDialog(), null);
+            context.Call(new NameDialog(), MessageReceivedAsync);
         }
     }
 }
