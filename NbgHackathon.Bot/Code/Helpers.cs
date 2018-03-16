@@ -18,6 +18,7 @@ namespace NbgHackathon.Bot
         public const string Passport = "Passport";
         public const string Selfie = "Selfie";
         public const string UserNameKey = "UserNameKey";
+        public const string StateKey = "StateKey";
         public const string EmotionKey = "EmotionKey";
 
         public static Dictionary<string, string> Emotions = new Dictionary<string, string>()
@@ -27,7 +28,7 @@ namespace NbgHackathon.Bot
             {"Sad", "Λυπημένο ύφος" }
         };
 
-        public static async Task<Tuple<Stream, MediaTypeHeaderValue>> GetImage(IMessageActivity message)
+        public static async Task<Stream> GetImage(IMessageActivity message)
         {
             if (message.Attachments != null && message.Attachments.Any())
             {
@@ -46,7 +47,7 @@ namespace NbgHackathon.Bot
 
                     var data = await responseMessage.Content.ReadAsStreamAsync();
                     var contentType = responseMessage.Content.Headers.ContentType;
-                    return new Tuple<Stream, MediaTypeHeaderValue>(data, contentType);
+                    return data;
                 }
             }
 
@@ -55,27 +56,27 @@ namespace NbgHackathon.Bot
 
         public static bool IsValidImage(Stream data, string contentType)
         {
-            return true;
+            return Conversation.Container.Resolve<IOnboardingRepository>().IsAcceptedContentType(contentType);
         }
 
-        public static async Task<string> StoreImage(Stream data, string contentType, string container)
+        public static async Task<string> StoreImage(Guid userState, Stream data, string contentType, string container)
         {
             var repository = Conversation.Container.Resolve<IOnboardingRepository>();
 
-            //switch (container)
-            //{
-            //    case Passport:
-            //        await repository.UploadPassport();
-            //        break;
-            //    case Selfie:
-            //        await repository.UploadSelfie()
-            //        break;
-            //    default:
-            //        throw new Exception("No Container");
-            //        break;
-            //}
+            string path = null;
+            switch (container)
+            {
+                case Passport:
+                    path = await repository.UploadPassport(userState, contentType, data);
+                    break;
+                case Selfie:
+                    path = await repository.UploadSelfie(userState, contentType, data);
+                    break;
+                default:
+                    throw new Exception("Κάποιο λάθος συνέβη!");
+            }
 
-            return "path";
+            return path;
         }
     }
 }

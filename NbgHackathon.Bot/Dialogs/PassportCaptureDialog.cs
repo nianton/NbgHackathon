@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using NbgHackathon.Domain;
 
 namespace NbgHackathon.Bot.Dialogs
 {
@@ -31,17 +32,21 @@ namespace NbgHackathon.Bot.Dialogs
             }
             else
             {
-                //await context.PostAsync($"Attachment of {attachment.ContentType} type and size of {contentLenghtBytes} bytes received.");
+                string contentType = message.Attachments.First().ContentType;
 
-                if (Helpers.IsValidImage(image.Item1, image.Item2.MediaType))
+                if (Helpers.IsValidImage(image, contentType))
                 {
-                    await Helpers.StoreImage(image.Item1, image.Item2.MediaType, Helpers.Passport);
+                    var persistedState = context.UserData.GetValue<OnboardingState>(Helpers.StateKey);
 
-                    context.Call(new SelfieCaptureDialog(), this.MessageReceivedAsync);
+                    var passportpath = await Helpers.StoreImage(persistedState.Id, image, contentType, Helpers.Passport);
+
+                    await context.PostAsync($"Τέλεια, το πήρα! \n Τώρα πάρε ένα {GetRandomEmotion(context)} και πάμε να βγάλουμε Seeelfieee!");
+                    context.Call(new SelfieCaptureDialog(), MessageReceivedAsync);
                 }
-
-                await context.PostAsync($"Τέλεια, το πήρα! \n Τώρα πάρε ένα {GetRandomEmotion(context)} και πάμε να βγάλουμε Seeelfieee!");
-                context.Call(new SelfieCaptureDialog(), MessageReceivedAsync);
+                else
+                {
+                    await context.PostAsync("Ωπα, κάτι πήγε στραβά. Ανέβασε ή τράβα ξανα φωτογραφία το διαβατήριο σου!");
+                }
             }
         }
 

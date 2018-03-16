@@ -36,5 +36,12 @@ namespace NbgHackathon.Domain
         /// <param name="image">The image's stream</param>
         /// <returns>The Uri of the uploaded image.</returns>
         Task<string> UploadSelfie(Guid id, string contentType, Stream image);
+
+        /// <summary>
+        /// Checks if the content type is supported
+        /// </summary>
+        /// <param name="contentType"></param>
+        /// <returns></returns>
+        bool IsAcceptedContentType(string contentType);
     }
 }

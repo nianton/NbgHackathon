@@ -136,13 +136,16 @@
     <Compile Include="Code\GlobalMessageHandlersBotModule.cs" />
     <Compile Include="Code\Helpers.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
+    <Compile Include="Dialogs\ConfirmDialog.cs" />
     <Compile Include="Dialogs\EmailDialog.cs" />
     <Compile Include="Dialogs\ExitDialog.cs" />
     <Compile Include="Dialogs\LegalEnityDialog.cs" />
     <Compile Include="Dialogs\NameDialog.cs" />
     <Compile Include="Dialogs\PassportCaptureDialog.cs" />
+    <Compile Include="Dialogs\ProgressCheckDialog.cs" />
     <Compile Include="Dialogs\RootDialog.cs" />
     <Compile Include="Dialogs\SelfieCaptureDialog.cs" />
+    <Compile Include="Dialogs\WelcomeAboardDialog.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

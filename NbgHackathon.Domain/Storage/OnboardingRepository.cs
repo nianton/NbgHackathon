@@ -155,7 +155,7 @@ namespace NbgHackathon.Domain
             throw new ArgumentException($"Content type: {contentType} is not valid for selfie.");
         }
 
-        private bool IsAcceptedContentType(string contentType)
+        public bool IsAcceptedContentType(string contentType)
         {
             return acceptedContentTypes.Contains(contentType);
         }
