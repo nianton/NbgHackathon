@@ -12,25 +12,26 @@ namespace NbgHackathon.Web.Tests.Domains
     [TestClass]
     public class ModelTests
     {
+        private readonly string connectionString;
         private readonly IOnboardingRepository repository;
 
         public ModelTests()
         {
-            var connectionString = ConfigurationManager.AppSettings["MainApplicationStorage"];
+            connectionString = ConfigurationManager.AppSettings["MainApplicationStorage"];
             repository = ServiceLocator.ResolveRepository(connectionString);
         }
 
         [TestMethod]
         public void TestGetOrCreateWithNewEmail()
         {
-            var model = repository.GetOrCreate($"test-{Guid.NewGuid():N}@nbg.gr").Result;
+            var model = repository.GetOrCreate($"test-{Guid.NewGuid():N}@nbg.gr", Guid.NewGuid().ToString()).Result;
             Assert.IsNotNull(model);
         }
 
         [TestMethod]
         public void TestCreateAndUpdate()
         {
-            var model = repository.GetOrCreate($"nianton@gmail.com").Result;
+            var model = repository.GetOrCreate($"nianton@gmail.com", Guid.NewGuid().ToString()).Result;
             model.SetPassportState(PassportValidationState.Valid, new PassportInformation
             {
                 DateOfBirth = new DateTime(1900, 10, 12),
@@ -44,5 +45,10 @@ namespace NbgHackathon.Web.Tests.Domains
             var updatedModel = repository.Update(model).Result;
             Assert.IsNotNull(model);
         }
+
+        //public void TestStorageConnection()
+        //{
+        //    var storageAccount = CloudStorageAccount
+        //}
     }
 }

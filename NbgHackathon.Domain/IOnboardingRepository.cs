@@ -10,7 +10,7 @@ namespace NbgHackathon.Domain
     {
         Task<OnboardingState> Get(Guid id);
 
-        Task<OnboardingState> GetOrCreate(string email);
+        Task<OnboardingState> GetOrCreate(string email, string botSessionId);
 
         Task<OnboardingState> Update(OnboardingState state);
 

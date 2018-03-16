@@ -1,8 +1,10 @@
-﻿using System;
+﻿using NbgHackathon.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace NbgHackathon.Web.Controllers
@@ -10,9 +12,11 @@ namespace NbgHackathon.Web.Controllers
     public class ValuesController : ApiController
     {
         // GET api/values
-        public IEnumerable<string> Get()
+        public async Task<IHttpActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            var repository = ServiceLocator.ResolveRepository();
+            var o = await repository.GetOrCreate("nianotn@gmail.com", "foo");
+            return Json(o);
         }
 
         // GET api/values/5

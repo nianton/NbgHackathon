@@ -37,5 +37,14 @@ namespace NbgHackathon.Domain
 
             return value;
         }
+
+        public static object GetPropertyValue(DynamicTableEntity entity, string key)
+        {
+            EntityProperty property = null;
+            return entity?.Properties.TryGetValue(key, out property) == true
+                ? property.PropertyAsObject
+                : null;
+
+        }
     }
 }

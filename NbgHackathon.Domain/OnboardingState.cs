@@ -12,14 +12,16 @@ namespace NbgHackathon.Domain
         private OnboardingState()
         { }
 
-        public OnboardingState(string email)
+        public OnboardingState(string email, string botSessionId)
         {
             Id = Guid.NewGuid();
             UserEmail = email;
+            BotSessionId = botSessionId;
             CreatedAt = UpdatedAt = DateTimeOffset.Now;
         }
 
         public Guid Id { get; private set; }
+        public string BotSessionId { get; private set; }
         public string ETag { get; private set; }
         public string UserEmail { get; private set; }
         public DateTimeOffset CreatedAt { get; private set; }
@@ -45,6 +47,7 @@ namespace NbgHackathon.Domain
             {
                 ETag = entity.ETag,
                 Id = entity.Properties[nameof(Id)].GuidValue.Value,
+                BotSessionId = entity.Properties.TryGetValue(nameof(BotSessionId), out var botSessionProperty) ? botSessionProperty.StringValue : null,
                 UserEmail = entity.Properties[nameof(UserEmail)].StringValue,
                 CreatedAt = entity.Properties[nameof(CreatedAt)].DateTimeOffsetValue.Value,
                 UpdatedAt = entity.Properties[nameof(UpdatedAt)].DateTimeOffsetValue.Value,
