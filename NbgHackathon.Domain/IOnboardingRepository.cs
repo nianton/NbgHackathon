@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,5 +18,9 @@ namespace NbgHackathon.Domain
         Task Delete(OnboardingState state);
 
         Task<IList<OnboardingState>> GetAll(int itemsPerPage = 50);
+
+        Task<string> UploadPassport(Guid id, string contentType, Stream image);
+
+        Task<string> UploadSelfie(Guid id, string contentType, Stream image);
     }
 }

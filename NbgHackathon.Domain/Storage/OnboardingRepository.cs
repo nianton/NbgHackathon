@@ -1,7 +1,9 @@
 ﻿using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Table;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,14 +12,26 @@ namespace NbgHackathon.Domain
 {
     internal class OnboardingRepository : IOnboardingRepository
     {
+        private static readonly HashSet<string> acceptedContentTypes = new HashSet<string>()
+        {
+            "image/jpg", "image/jpeg", "image/png", "image/gif"
+        };
+
         private static bool isInitialized;
         private readonly CloudTable table;
+        private readonly CloudBlobContainer passportContainer;
+        private readonly CloudBlobContainer selfieContainer;
 
         public OnboardingRepository(string storageConnectionString)
         {
             var storageAccount = CloudStorageAccount.Parse(storageConnectionString);
             var tableClient = storageAccount.CreateCloudTableClient();
             table = tableClient.GetTableReference(Constants.StorageTableName);
+
+            var blobClient = storageAccount.CreateCloudBlobClient();
+            passportContainer = blobClient.GetContainerReference(Constants.PassportContainerName);
+            selfieContainer = blobClient.GetContainerReference(Constants.SelfieContainerName);
+
             EnsureInitialization();
         }
 
@@ -103,6 +117,26 @@ namespace NbgHackathon.Domain
         private static OnboardingState ToModel(DynamicTableEntity entity)
         {
             return OnboardingState.Create(entity);
+        }
+
+        public Task<string> UploadPassport(Guid id, string contentType, Stream image)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> UploadSelfie(Guid id, string contentType, Stream image)
+        {
+            if (IsAcceptedContentType(contentType))
+            {
+
+            }
+
+            return null;
+        }
+
+        private bool IsAcceptedContentType(string contentType)
+        {
+            return acceptedContentTypes.Contains(contentType);
         }
     }
 }
