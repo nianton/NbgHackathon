@@ -99,6 +99,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
+    <Content Include="Images\passport.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\selfie.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -92,6 +92,8 @@ namespace NbgHackathon.Domain
             if (!isInitialized)
             {
                 table.CreateIfNotExists();
+                selfieContainer.CreateIfNotExists();
+                passportContainer.CreateIfNotExists();
                 isInitialized = true;
             }
         }
@@ -119,19 +121,38 @@ namespace NbgHackathon.Domain
             return OnboardingState.Create(entity);
         }
 
-        public Task<string> UploadPassport(Guid id, string contentType, Stream image)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<string> UploadSelfie(Guid id, string contentType, Stream image)
+        public async Task<string> UploadPassport(Guid id, string contentType, Stream image)
         {
             if (IsAcceptedContentType(contentType))
             {
+                var blobName = $"{id:N}.{contentType.Replace("image/", string.Empty)}";
+                var blob = passportContainer.GetBlockBlobReference(blobName);
+                await blob.UploadFromStreamAsync(image);
 
+                blob.Properties.ContentType = contentType;
+                await blob.SetPropertiesAsync();
+
+                return blob.Uri.ToString();
             }
 
-            return null;
+            throw new ArgumentException($"Content type: {contentType} is not valid for passport.");
+        }
+
+        public async Task<string> UploadSelfie(Guid id, string contentType, Stream image)
+        {
+            if (IsAcceptedContentType(contentType))
+            {
+                var blobName = $"{id:N}.{contentType.Replace("image/", string.Empty)}";
+                var blob = selfieContainer.GetBlockBlobReference(blobName);
+                await blob.UploadFromStreamAsync(image);
+
+                blob.Properties.ContentType = contentType;
+                await blob.SetPropertiesAsync();
+
+                return blob.Uri.ToString();
+            }
+
+            throw new ArgumentException($"Content type: {contentType} is not valid for selfie.");
         }
 
         private bool IsAcceptedContentType(string contentType)

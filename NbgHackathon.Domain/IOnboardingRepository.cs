@@ -19,8 +19,22 @@ namespace NbgHackathon.Domain
 
         Task<IList<OnboardingState>> GetAll(int itemsPerPage = 50);
 
+        /// <summary>
+        /// Uploads the passport image to Blob storage.
+        /// </summary>
+        /// <param name="id">The onboarding identifier</param>
+        /// <param name="contentType">The images contenttype</param>
+        /// <param name="image">The image's stream</param>
+        /// <returns>The Uri of the uploaded image.</returns>
         Task<string> UploadPassport(Guid id, string contentType, Stream image);
 
+        /// <summary>
+        /// Uploads the selfie to Blob storage.
+        /// </summary>
+        /// <param name="id">The onboarding identifier</param>
+        /// <param name="contentType">The images contenttype</param>
+        /// <param name="image">The image's stream</param>
+        /// <returns>The Uri of the uploaded image.</returns>
         Task<string> UploadSelfie(Guid id, string contentType, Stream image);
     }
 }

@@ -3,6 +3,7 @@ using NbgHackathon.Domain;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,6 +45,13 @@ namespace NbgHackathon.Web.Tests.Domains
 
             var updatedModel = repository.Update(model).Result;
             Assert.IsNotNull(model);
+        }
+
+        [TestMethod]
+        public void TestImageUpload()
+        {
+            var uri = repository.UploadSelfie(Guid.NewGuid(), "image/jpg", File.OpenRead("images/passport.jpg")).Result;
+            Assert.IsNotNull(uri);
         }
 
         //public void TestStorageConnection()
