@@ -7,6 +7,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
+using Autofac;
+using Microsoft.Bot.Builder.Dialogs;
+using NbgHackathon.Domain;
 
 namespace NbgHackathon.Bot
 {
@@ -15,8 +18,16 @@ namespace NbgHackathon.Bot
         public const string Passport = "Passport";
         public const string Selfie = "Selfie";
         public const string UserNameKey = "UserNameKey";
+        public const string EmotionKey = "EmotionKey";
 
-        public static async Task<Stream> GetImage(IMessageActivity message)
+        public static Dictionary<string, string> Emotions = new Dictionary<string, string>()
+        {
+            {"Angry", "Θυμωμένο ύφος" },
+            {"Happy", "Χαμόγελο" },
+            {"Sad", "Λυπημένο ύφος" }
+        };
+
+        public static async Task<Tuple<Stream, MediaTypeHeaderValue>> GetImage(IMessageActivity message)
         {
             if (message.Attachments != null && message.Attachments.Any())
             {
@@ -33,22 +44,38 @@ namespace NbgHackathon.Bot
 
                     var responseMessage = await httpClient.GetAsync(attachment.ContentUrl);
 
-                    return await responseMessage.Content.ReadAsStreamAsync();
+                    var data = await responseMessage.Content.ReadAsStreamAsync();
+                    var contentType = responseMessage.Content.Headers.ContentType;
+                    return new Tuple<Stream, MediaTypeHeaderValue>(data, contentType);
                 }
             }
 
             return null;
         }
 
-        public static bool IsValidImage(Stream data)
+        public static bool IsValidImage(Stream data, string contentType)
         {
             return true;
         }
 
-        public static Task StoreImage(Stream data, string container)
+        public static async Task<string> StoreImage(Stream data, string contentType, string container)
         {
-            //Call Data Model
-            throw new NotImplementedException();
+            var repository = Conversation.Container.Resolve<IOnboardingRepository>();
+
+            //switch (container)
+            //{
+            //    case Passport:
+            //        await repository.UploadPassport();
+            //        break;
+            //    case Selfie:
+            //        await repository.UploadSelfie()
+            //        break;
+            //    default:
+            //        throw new Exception("No Container");
+            //        break;
+            //}
+
+            return "path";
         }
     }
 }

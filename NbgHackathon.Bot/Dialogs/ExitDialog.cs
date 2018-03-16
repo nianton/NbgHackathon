@@ -15,7 +15,7 @@ namespace NbgHackathon.Bot.Dialogs
             return Task.CompletedTask;
         }
 
-        private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
+        internal async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
             var message = await result;
 
