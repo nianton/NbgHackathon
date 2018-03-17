@@ -17,7 +17,7 @@ namespace NbgHackathon.Domain
 
         Task Delete(OnboardingState state);
 
-        Task<IList<OnboardingState>> GetAll(int itemsPerPage = 50);
+        Task<PagedResult<OnboardingState>> GetAll(int itemsPerPage = 50, string continuationToken = null);
 
         /// <summary>
         /// Uploads the passport image to Blob storage.

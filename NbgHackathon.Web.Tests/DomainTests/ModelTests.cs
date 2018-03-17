@@ -1,12 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NbgHackathon.Domain;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NbgHackathon.Web.Tests.Domains
 {
@@ -48,15 +45,34 @@ namespace NbgHackathon.Web.Tests.Domains
         }
 
         [TestMethod]
-        public void TestImageUpload()
+        public void TestPassportUpload()
         {
             var uri = repository.UploadSelfie(Guid.NewGuid(), "image/jpg", File.OpenRead("images/passport.jpg")).Result;
             Assert.IsNotNull(uri);
         }
 
-        //public void TestStorageConnection()
-        //{
-        //    var storageAccount = CloudStorageAccount
-        //}
+        [TestMethod]
+        public void TestSelfieUpload()
+        {
+            var uri = repository.UploadSelfie(Guid.NewGuid(), "image/jpg", File.OpenRead("images/selfie.jpg")).Result;
+            Assert.IsNotNull(uri);
+        }
+
+        [TestMethod]
+        public void TestGetAll()
+        {
+            var itemsPerPage = 2;
+            var pagedResult = repository.GetAll(itemsPerPage).Result;
+
+            Assert.IsNotNull(pagedResult.Items.Count == 2);
+
+            var pagedResult2 = repository.GetAll(itemsPerPage, pagedResult.ContinuationToken).Result;
+
+            // Page items are as requested
+            Assert.IsNotNull(pagedResult2.Items.Count == 2);
+
+            // 2nd page items do not exist on the 1st page's items
+            Assert.IsFalse(pagedResult2.Items.Any(x => pagedResult.Items.Any(y => y.Id == x.Id)));
+        }
     }
 }

@@ -42,6 +42,9 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,12 +56,14 @@
     <Compile Include="Constants.cs" />
     <Compile Include="EmotionScores.cs" />
     <Compile Include="Extensions\SerializationExtensions.cs" />
+    <Compile Include="Extensions\StorageHelper.cs" />
     <Compile Include="FaceEmotion.cs" />
     <Compile Include="IOnboardingRepository.cs" />
     <Compile Include="IPassportParser.cs" />
     <Compile Include="OnboardingState.Emotion.cs" />
     <Compile Include="OnboardingState.ImageComparison.cs" />
     <Compile Include="EmotionValidationState.cs" />
+    <Compile Include="PagedResult.cs" />
     <Compile Include="ServiceLocator.cs" />
     <Compile Include="Storage\OnboardingRepository.cs" />
     <Compile Include="OnboardingState.cs" />
@@ -70,7 +75,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

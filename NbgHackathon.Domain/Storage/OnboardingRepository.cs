@@ -69,13 +69,18 @@ namespace NbgHackathon.Domain
             return ToModel(entity);
         }
 
-        public async Task<IList<OnboardingState>> GetAll(int itemsPerPage = 50)
+        public async Task<PagedResult<OnboardingState>> GetAll(int itemsPerPage = 50, string continuationToken = null)
         {
             var query = new TableQuery() { TakeCount = itemsPerPage };
-            var entities = await table.ExecuteQuerySegmentedAsync(query, null);
+            var tableContinuationToken = StorageHelper.ConvertToContinuationToken(continuationToken);
+            var entities = await table.ExecuteQuerySegmentedAsync(query, tableContinuationToken);
+            var pagedResult = new PagedResult<OnboardingState>
+            {
+                ContinuationToken = entities.ContinuationToken.ConvertToString(),
+                Items = entities.ToList().ConvertAll(ToModel)
+            };
 
-            var models = entities.ToList().ConvertAll(ToModel);
-            return models;
+            return pagedResult;
         }
 
         public async Task<OnboardingState> Update(OnboardingState state)
