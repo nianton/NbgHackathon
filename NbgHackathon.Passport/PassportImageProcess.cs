@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
+using Microsoft.ProjectOxford.Face;
 using NbgHackathon.Domain;
 
 namespace NbgHackathon.Passport
@@ -15,48 +16,34 @@ namespace NbgHackathon.Passport
         [FunctionName(FunctionName)]
         public static async Task Run([BlobTrigger("passports/{fileName}.{fileExtension}", Connection = "MainApplicationStorage")]Stream myBlob, string fileName, string fileExtension, TraceWriter log)
         {
-            var onboardingRepository = ServiceLocator.ResolveRepository();
-            if (!Guid.TryParse(fileName, out var onboardingId))
+            log.Info($"Executing {FunctionName} for {fileName}.{fileExtension}.");
+            try
             {
-                throw new ArgumentException($"The blob's filename ({fileName}) could not be parsed as an onboarding session identifier");
-            }
-
-            var onboarding = await onboardingRepository.Get(onboardingId);
-            if (onboarding == null)
-            {
-                throw new InvalidOperationException($"No onboarding session could be located for the identifier: {onboardingId}");
-            }
-
-            var passportParser = CreatePassportParser();
-            var passportParseResult = await passportParser.ParsePassport(myBlob);
-            if (passportParseResult.Success())
-            {
-                var passportDocument = passportParseResult.PassportDocument;
-                var passportInfo = new PassportInformation()
+                var onboardingRepository = ServiceLocator.ResolveRepository();
+                if (!Guid.TryParse(fileName, out var onboardingId))
                 {
-                    Gender = passportDocument.Sex,
-                    DateOfBirth = passportDocument.BirthDateVerified
-                        ? DateTime.ParseExact(passportDocument.BirthDate, "yyMMdd", CultureInfo.InvariantCulture)
-                        : default(DateTime?),
-                    ExpirationDate = passportDocument.ExpiryDateVerified
-                        ? DateTime.ParseExact(passportDocument.ExpiryDate, "yyMMdd", CultureInfo.InvariantCulture)
-                        : default(DateTime?),
-                    Firstname = passportDocument.GivenName,
-                    Surname = passportDocument.LastName,
-                    PassportNumber = passportDocument.DocumentNumber,
-                    IssuingState = passportDocument.IssuingCountry,
-                    Nationality = passportDocument.Nationality
-                };
+                    throw new ArgumentException($"The blob's filename ({fileName}) could not be parsed as a valid onboarding session identifier");
+                }
 
-                var isExpirationDateValid = passportInfo.ExpirationDate.HasValue && passportInfo.ExpirationDate < DateTime.Now;
-                onboarding.SetPassportState(!isExpirationDateValid ? PassportValidationState.PassportExpired : PassportValidationState.Valid, passportInfo);
+                var onboarding = await onboardingRepository.Get(onboardingId);
+                if (onboarding == null)
+                {
+                    throw new InvalidOperationException($"No onboarding session could be located for the identifier: {onboardingId}");
+                }
+
+                var passportParser = CreatePassportParser();
+                var faceClient = CreateFaceClient();
+
+                var passportProcessor = new PassportImageProcessor(passportParser, faceClient, log);
+                onboarding = await passportProcessor.Process(myBlob, onboarding);
+
+                await onboardingRepository.Update(onboarding);
             }
-            else
+            catch (Exception ex)
             {
-                onboarding.SetPassportState(PassportValidationState.MrzNotRecognized);
+                log.Error($"Failed processing passport image", ex);
+                throw;
             }
-
-            await onboardingRepository.Update(onboarding);
         }
 
         private static IPassportParser CreatePassportParser()
@@ -68,6 +55,15 @@ namespace NbgHackathon.Passport
 
             var passportParser = new PassportParser(applicationId, password);
             return passportParser;
+        }
+
+        private static FaceServiceClient CreateFaceClient()
+        {
+            var subscriptionKey = Environment.GetEnvironmentVariable("FaceApiSubscriptionKey");
+            var apiRoot = Environment.GetEnvironmentVariable("FaceApiEndpoint");
+
+            var faceClient = new FaceServiceClient(subscriptionKey, apiRoot);
+            return faceClient;
         }
     }
 }

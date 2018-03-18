@@ -28,6 +28,7 @@ namespace NbgHackathon.Domain
         public DateTimeOffset UpdatedAt { get; private set; }
         public PassportInformation PassportInfo { get; private set; }
         public PassportValidationState PassportValidation { get; private set; }
+        public string PassportFaceId { get; private set; }
         public EmotionValidationState EmotionValidation { get; private set; }
         public EmotionScores EmotionScores { get; private set; }
         public FaceEmotion? RequestedEmotion { get; private set; }
