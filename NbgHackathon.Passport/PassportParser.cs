@@ -1,9 +1,7 @@
 ﻿using Abbyy.CloudOcrSdk;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using ThreadTask = System.Threading.Tasks.Task;
 
@@ -19,7 +17,7 @@ namespace NbgHackathon.Passport
             {
                 ApplicationId = applicationId,
                 Password = password,
-                ServerUrl = "http://cloud.ocrsdk.com"
+                ServerUrl = "https://cloud.ocrsdk.com"
             };
         }
 
@@ -28,8 +26,9 @@ namespace NbgHackathon.Passport
             var result = new PassportParseResult();
             try
             {
-                // TODO: Reusing last task's result (if exists) to spare executions during dev -remove in deployed
+                // TODO: Reusing last task's result (if exists) to spare executions during dev -to be removed in deployed
                 var task = ocrClient.ListTasks().LastOrDefault() ?? ocrClient.ProcessMrz(passportImage);
+
                 result.TaskId = task.Id.ToString();
                 while (task.IsTaskActive())
                 {
@@ -37,7 +36,7 @@ namespace NbgHackathon.Passport
                     task = ocrClient.GetTaskStatus(task.Id);
                 }
 
-                /// Sample response file content: /SampleResponse/OcrMrzTaskDocument.xml
+                // Sample response file content: /SampleResponse/OcrMrzTaskDocument.xml
                 var documentUrl = task.DownloadUrls.Single();
                 result.PassportDocument = PassportDocumentInfo.CreateFromDocumentUrl(documentUrl);
             }

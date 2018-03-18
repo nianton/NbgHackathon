@@ -31,42 +31,54 @@ namespace NbgHackathon.Passport
         /// <returns>The onboarding with updated its passport validation state.</returns>
         public async Task<OnboardingState> Process(Stream passportImage, OnboardingState onboarding)
         {
-            // 1. Detecting faces in the passport photo (one and only should be located)
-
-            log.Info($"Requesting face detection for onboarding ({onboarding.Id}) passport...");
-            var faces = await faceServiceClient.DetectAsync(passportImage);
-            log.Info($"Face detection results for onboarding ({onboarding.Id}) passport:\r\n {JsonConvert.SerializeObject(faces)}");
-
-            if (faces.Length == 1)
+            using (var ms = new MemoryStream())
             {
-                var face = faces.Single();
-                var passportFaceId = face.FaceId.ToString();
+                // We will have to process the stream twice, so we need to be able to seek back to start
+                // we copy the data in a MemoryStream
+                await passportImage.CopyToAsync(ms);
+                ms.Seek(0, SeekOrigin.Begin);
 
-                // 2. Parsing passport information
+                // 1. Detecting faces in the passport photo (one and only should be located)
 
-                passportImage.Seek(0, SeekOrigin.Begin);
-                var parseResult = await passportParser.ParsePassport(passportImage);
-                if (parseResult.Success())
+                log.Info($"Requesting face detection for onboarding ({onboarding.Id}) passport...");
+
+                // Input stream gets disposed by the client -creating a new instance
+                var faces = await faceServiceClient.DetectAsync(new MemoryStream(ms.ToArray()));
+                log.Info($"Face detection results for onboarding ({onboarding.Id}) passport:\r\n {JsonConvert.SerializeObject(faces)}");
+
+                if (faces.Length == 1)
                 {
-                    var passportInfo = ExtractPassportInformation(parseResult);
+                    var face = faces.Single();
+                    var passportFaceId = face.FaceId.ToString();
 
-                    // TODO: More checks should be performed here for the validity of the parsed information
-                    var isExpirationDateValid = passportInfo.ExpirationDate.HasValue && passportInfo.ExpirationDate < DateTime.Now;
-                    onboarding.SetPassportState(!isExpirationDateValid ? PassportValidationState.PassportExpired : PassportValidationState.Valid, passportInfo, passportFaceId);
+                    // 2. Parsing passport information
+
+                    ms.Seek(0, SeekOrigin.Begin);
+                    var parseResult = await passportParser.ParsePassport(ms);
+                    if (parseResult.Success())
+                    {
+                        var passportInfo = ExtractPassportInformation(parseResult);
+
+                        // TODO: More checks should be performed here for the validity of the parsed information
+                        var isExpirationDateValid = passportInfo.ExpirationDate.HasValue && passportInfo.ExpirationDate > DateTime.Today;
+                        onboarding.SetPassportState(!isExpirationDateValid ? PassportValidationState.PassportExpired : PassportValidationState.Valid, passportInfo, passportFaceId);
+                    }
+                    else
+                    {
+                        log.Error($"Passport parsing failed with error: {parseResult.ErrorMessage} {Environment.NewLine} ExceptionInfo: {parseResult.ExceptionInfo}");
+                        onboarding.SetPassportState(PassportValidationState.MrzNotRecognized, passportFaceId: passportFaceId);
+                    }
                 }
                 else
                 {
-                    log.Error($"Passport parsing failed with error: {parseResult.ErrorMessage} {Environment.NewLine} ExceptionInfo: {parseResult.ExceptionInfo}");
-                    onboarding.SetPassportState(PassportValidationState.MrzNotRecognized, passportFaceId: passportFaceId);
+                    log.Error($"Photo could not be located on passport (Onboarding Id: {onboarding.Id})");
+                    onboarding.SetPassportState(PassportValidationState.PhotoNotLocated);
                 }
-            }
-            else
-            {
-                log.Error($"Photo could not be located on passport (Onboarding Id: {onboarding.Id})");
-                onboarding.SetPassportState(PassportValidationState.PhotoNotLocated);
-            }
 
-            return onboarding;
+                return onboarding;
+            }
+            
+           
         }
 
         /// <summary>
