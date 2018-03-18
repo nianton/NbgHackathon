@@ -64,15 +64,18 @@ namespace NbgHackathon.Web.Tests.Domains
             var itemsPerPage = 2;
             var pagedResult = repository.GetAll(itemsPerPage).Result;
 
-            Assert.IsNotNull(pagedResult.Items.Count == 2);
+            Assert.IsNotNull(pagedResult.Items.Count <= 2);
 
-            var pagedResult2 = repository.GetAll(itemsPerPage, pagedResult.ContinuationToken).Result;
+            if (pagedResult.HasMoreResults)
+            {
+                var pagedResult2 = repository.GetAll(itemsPerPage, pagedResult.ContinuationToken).Result;
 
-            // Page items are as requested
-            Assert.IsNotNull(pagedResult2.Items.Count == 2);
+                // Page items are as requested
+                Assert.IsNotNull(pagedResult2.Items.Count <= 2);
 
-            // 2nd page items do not exist on the 1st page's items
-            Assert.IsFalse(pagedResult2.Items.Any(x => pagedResult.Items.Any(y => y.Id == x.Id)));
+                // 2nd page items do not exist on the 1st page's items
+                Assert.IsFalse(pagedResult2.Items.Any(x => pagedResult.Items.Any(y => y.Id == x.Id)));
+            }
         }
     }
 }

@@ -3,7 +3,9 @@
     <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="AbbyyOnlineSdk" Version="1.0.0-CI00024" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.9" />
+    <PackageReference Include="WindowsAzure.Storage" Version="8.7.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NbgHackathon.Domain\NbgHackathon.Domain.csproj" />
@@ -18,6 +20,9 @@
     <None Update="local.settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+    <None Update="SampleResponse\OcrMrzTaskDocument.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 </Project>

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "NbgHackathon.Passport": {
+      "commandName": "Project",
+      "environmentVariables": { }
+    }
+  }
+}

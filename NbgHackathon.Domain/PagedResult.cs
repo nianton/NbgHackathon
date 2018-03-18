@@ -10,6 +10,6 @@ namespace NbgHackathon.Domain
     {
         public IList<T> Items { get; set; }
         public string ContinuationToken { get; set; }
-        public bool HasMoreResult => !string.IsNullOrEmpty(ContinuationToken);
+        public bool HasMoreResults => !string.IsNullOrEmpty(ContinuationToken);
     }
 }

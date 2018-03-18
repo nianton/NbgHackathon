@@ -1,0 +1,11 @@
+{ // Copy as local.settings.json, if settings file does not exist
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "AzureWebJobsDashboard": "UseDevelopmentStorage=true",
+    "MainApplicationStorage": "UseDevelopmentStorage=true",
+    "CloudOcrApplicationId": "xxx",
+    "CloudOcrPassword": "xxx"
+  },
+  "ConnectionStrings": {}
+}
