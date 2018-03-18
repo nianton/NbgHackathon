@@ -71,7 +71,6 @@
     <Compile Include="Extensions\StorageHelper.cs" />
     <Compile Include="FaceEmotion.cs" />
     <Compile Include="IOnboardingRepository.cs" />
-    <Compile Include="IPassportParser.cs" />
     <Compile Include="OnboardingState.Emotion.cs" />
     <Compile Include="OnboardingState.ImageComparison.cs" />
     <Compile Include="EmotionValidationState.cs" />

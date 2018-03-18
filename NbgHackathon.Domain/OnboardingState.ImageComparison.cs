@@ -10,7 +10,7 @@ namespace NbgHackathon.Domain
     {
         public void SetImageComparisonState()
         {
-            // TODO: Set passport validation / state / info
+            // TODO: Set image comparison / state 
         }
     }
 }

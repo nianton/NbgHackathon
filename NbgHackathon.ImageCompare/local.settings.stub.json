@@ -4,8 +4,6 @@
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "AzureWebJobsDashboard": "UseDevelopmentStorage=true",
     "MainApplicationStorage": "UseDevelopmentStorage=true",
-    "CloudOcrApplicationId": "xxx",
-    "CloudOcrPassword": "xxx",
     "FaceApiSubscriptionKey": "xxx",
     "FaceApiEndpoint": "https://westeurope.api.cognitive.microsoft.com/face/v1.0"
   },

@@ -37,6 +37,7 @@ namespace NbgHackathon.Domain
         {
             PassportInfo = null;
             PassportValidation = PassportValidationState.None;
+            PassportFaceId = null;
             RequestedEmotion = null;
             EmotionScores = null;
             EmotionValidation = EmotionValidationState.None;
