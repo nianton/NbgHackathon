@@ -8,9 +8,9 @@ namespace NbgHackathon.Domain
 {
     public partial class OnboardingState
     {
-        public void SetImageComparisonState()
+        public void SetImageComparisonState(FaceComparisonValidationState validationState)
         {
-            // TODO: Set image comparison / state 
+            FaceValidation = validationState;
         }
     }
 }

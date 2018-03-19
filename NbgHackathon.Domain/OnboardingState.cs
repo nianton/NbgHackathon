@@ -32,6 +32,8 @@ namespace NbgHackathon.Domain
         public EmotionValidationState EmotionValidation { get; private set; }
         public EmotionScores EmotionScores { get; private set; }
         public FaceEmotion? RequestedEmotion { get; private set; }
+        public string SelfieFaceId { get; private set; }
+        public FaceComparisonValidationState FaceValidation { get; private set; }
 
         public void Reset()
         {
@@ -41,6 +43,8 @@ namespace NbgHackathon.Domain
             RequestedEmotion = null;
             EmotionScores = null;
             EmotionValidation = EmotionValidationState.None;
+            FaceValidation = FaceComparisonValidationState.None;
+            SelfieFaceId = null;
         }
 
         internal static OnboardingState Create(DynamicTableEntity entity)

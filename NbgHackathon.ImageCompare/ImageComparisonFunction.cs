@@ -1,8 +1,10 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.ProjectOxford.Face;
+using Microsoft.ProjectOxford.Face.Contract;
 using NbgHackathon.Domain;
 
 namespace NbgHackathon.ImageCompare
@@ -31,16 +33,32 @@ namespace NbgHackathon.ImageCompare
                 }
 
                 var faceClient = CreateFaceClient();
+                var similarFaces = await faceClient.FindSimilarAsync(
+                    Guid.Parse(onboarding.PassportFaceId), 
+                    new[] { Guid.Parse(onboarding.SelfieFaceId) });
 
-                // TODO: Process queue item to compare similarity of selfie and passport image.
-                throw new NotImplementedException();
-                //await onboardingRepository.Update(onboarding);
+                var validationState = GetValidationState(similarFaces);
+                onboarding.SetImageComparisonState(validationState);
+
+                // Persist state change
+                await onboardingRepository.Update(onboarding);
             }
             catch (Exception ex)
             {
                 log.Error($"Failed processing image comparison", ex);
                 throw;
             }
+        }
+
+        private static FaceComparisonValidationState GetValidationState(SimilarFace[] similarFaces)
+        {
+            return similarFaces.Length == 0
+                ? FaceComparisonValidationState.NotMatched
+                : similarFaces[0].Confidence > 0.8
+                    ? FaceComparisonValidationState.Valid
+                    : similarFaces[0].Confidence > 0.5
+                        ? FaceComparisonValidationState.PotentialMatch
+                        : FaceComparisonValidationState.NotMatched;
         }
 
         private static FaceServiceClient CreateFaceClient()

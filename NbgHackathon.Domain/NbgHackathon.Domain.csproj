@@ -69,6 +69,7 @@
     <Compile Include="EmotionScores.cs" />
     <Compile Include="Extensions\SerializationExtensions.cs" />
     <Compile Include="Extensions\StorageHelper.cs" />
+    <Compile Include="FaceComparisonValidationState.cs" />
     <Compile Include="FaceEmotion.cs" />
     <Compile Include="IOnboardingRepository.cs" />
     <Compile Include="OnboardingState.Emotion.cs" />

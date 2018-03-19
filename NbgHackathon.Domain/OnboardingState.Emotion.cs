@@ -16,7 +16,7 @@ namespace NbgHackathon.Domain
             UpdatedAt = DateTimeOffset.Now;
         }
 
-        public void SetEmotionResult(EmotionValidationState validation, EmotionScores scores)
+        public void SetEmotionResult(EmotionValidationState validation, EmotionScores scores = null, string selfieFaceId = null)
         {
             if (validation != EmotionValidationState.None && RequestedEmotion == null)
                 throw new InvalidOperationException("Requested emotion has not been set.");
@@ -24,6 +24,7 @@ namespace NbgHackathon.Domain
             EmotionScores = scores;
             EmotionValidation = validation;
             UpdatedAt = DateTimeOffset.Now;
+            SelfieFaceId = selfieFaceId;
         }
     }
 }

@@ -43,11 +43,11 @@ namespace NbgHackathon.Emotion
 
                 if (faces.Length == 0)
                 {
-                    onboarding.SetEmotionResult(EmotionValidationState.FaceNotFound, null);
+                    onboarding.SetEmotionResult(EmotionValidationState.FaceNotFound);
                 }
                 else if (faces.Length > 1)
                 {
-                    onboarding.SetEmotionResult(EmotionValidationState.MultipleFacesDetected, null);
+                    onboarding.SetEmotionResult(EmotionValidationState.MultipleFacesDetected);
                 }
                 else
                 {
@@ -68,8 +68,9 @@ namespace NbgHackathon.Emotion
 
                     var requestedEmotionScore = emotions[$"{onboarding.RequestedEmotion}"];
                     var isValid = requestedEmotionScore > MinimumThreshold;
+                    var validationState = isValid ? EmotionValidationState.Valid : EmotionValidationState.EmotionNotMatched;
 
-                    onboarding.SetEmotionResult(isValid ? EmotionValidationState.Valid : EmotionValidationState.EmotionNotMatched, emotionScores);
+                    onboarding.SetEmotionResult(validationState, emotionScores, face.FaceId.ToString());
                 }
 
                 await onboardingRepository.Update(onboarding);
@@ -79,7 +80,6 @@ namespace NbgHackathon.Emotion
                 log.Error($"Failed processing passport image", ex);
                 throw;
             }
-
         }
 
         private static FaceServiceClient CreateFaceClient()

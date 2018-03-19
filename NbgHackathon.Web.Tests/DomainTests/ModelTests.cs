@@ -56,7 +56,7 @@ namespace NbgHackathon.Web.Tests.Domains
         public void TestSelfieUpload()
         {
             var model = repository.GetOrCreate($"nianton@gmail.com", Guid.NewGuid().ToString()).Result;
-            var uri = repository.UploadSelfie(model.Id, "image/jpg", File.OpenRead("images/selfie.jpg")).Result;
+            var uri = repository.UploadSelfie(model.Id, "image/jpg", File.OpenRead("images/passport-as-selfie.jpg")).Result;
             Assert.IsNotNull(uri);
         }
 
