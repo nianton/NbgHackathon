@@ -18,11 +18,12 @@ namespace NbgHackathon.Domain
 
         public void SetEmotionResult(EmotionValidationState validation, EmotionScores scores)
         {
-            if (RequestedEmotion == null)
-                throw new InvalidOperationException("Requested score has not been set.");
+            if (validation != EmotionValidationState.None && RequestedEmotion == null)
+                throw new InvalidOperationException("Requested emotion has not been set.");
 
             EmotionScores = scores;
             EmotionValidation = validation;
+            UpdatedAt = DateTimeOffset.Now;
         }
     }
 }
