@@ -90,7 +90,7 @@ namespace NbgHackathon.Domain
             var result = await table.ExecuteAsync(updateOperation);
             var updatedEntity = (DynamicTableEntity)result.Result;
             return ToModel(updatedEntity);
-        }     
+        }
 
         private void EnsureInitialization()
         {
@@ -128,36 +128,44 @@ namespace NbgHackathon.Domain
 
         public async Task<string> UploadPassport(Guid id, string contentType, Stream image)
         {
-            if (IsAcceptedContentType(contentType))
+            if (!IsAcceptedContentType(contentType))
             {
-                var blobName = $"{id:N}.{contentType.Replace("image/", string.Empty)}";
-                var blob = passportContainer.GetBlockBlobReference(blobName);
-                await blob.UploadFromStreamAsync(image);
-
-                blob.Properties.ContentType = contentType;
-                await blob.SetPropertiesAsync();
-
-                return blob.Uri.ToString();
+                throw new ArgumentException($"Content type: {contentType} is not valid for passport image.");
             }
 
-            throw new ArgumentException($"Content type: {contentType} is not valid for passport.");
+            var onboarding = await Get(id);
+            if (onboarding == null)
+            {
+                throw new InvalidOperationException($"No onboarding entry was not found for id: {id}");
+            }
+
+            var blobName = $"{id:N}.{contentType.Replace("image/", string.Empty)}";
+            var blob = await passportContainer.UploadAsync(blobName, image, contentType);
+
+            // TODO: Model should be updated too to keep track of the upload
+
+            return blob.Uri.ToString();
         }
 
         public async Task<string> UploadSelfie(Guid id, string contentType, Stream image)
         {
-            if (IsAcceptedContentType(contentType))
+            if (!IsAcceptedContentType(contentType))
             {
-                var blobName = $"{id:N}.{contentType.Replace("image/", string.Empty)}";
-                var blob = selfieContainer.GetBlockBlobReference(blobName);
-                await blob.UploadFromStreamAsync(image);
-
-                blob.Properties.ContentType = contentType;
-                await blob.SetPropertiesAsync();
-
-                return blob.Uri.ToString();
+                throw new ArgumentException($"Content type: {contentType} is not valid for selfie.");
             }
 
-            throw new ArgumentException($"Content type: {contentType} is not valid for selfie.");
+            var onboarding = await Get(id);
+            if (onboarding == null)
+            {
+                throw new InvalidOperationException($"No onboarding entry was found for id: {id}");
+            }
+
+            var blobName = $"{id:N}.{contentType.Replace("image/", string.Empty)}";
+            var blob = await selfieContainer.UploadAsync(blobName, image, contentType);
+
+            // TODO: Model should be updated too to keep track of the upload
+
+            return blob.Uri.ToString();
         }
 
         public bool IsAcceptedContentType(string contentType)

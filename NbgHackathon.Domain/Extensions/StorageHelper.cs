@@ -1,5 +1,8 @@
-﻿using Microsoft.WindowsAzure.Storage.Table;
+﻿using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Table;
 using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace NbgHackathon.Domain
 {
@@ -29,6 +32,17 @@ namespace NbgHackathon.Domain
 
             var tokenParts = new[] { token.NextPartitionKey, token.NextRowKey, token.NextTableName };
             return string.Join(TokenPartDelimiter, tokenParts);
+        }
+
+        public static async Task<CloudBlockBlob> UploadAsync(this CloudBlobContainer container, string blobName, Stream blobData, string contentType)
+        {
+            var blob = container.GetBlockBlobReference(blobName);
+            await blob.UploadFromStreamAsync(blobData);
+
+            blob.Properties.ContentType = contentType;
+            await blob.SetPropertiesAsync();
+
+            return blob;
         }
 
         private static (string nextPartitionKey, string nextRowKey, string nextTableName) GetTokenParts(string token)

@@ -47,14 +47,16 @@ namespace NbgHackathon.Web.Tests.Domains
         [TestMethod]
         public void TestPassportUpload()
         {
-            var uri = repository.UploadSelfie(Guid.NewGuid(), "image/jpg", File.OpenRead("images/passport.jpg")).Result;
+            var model = repository.GetOrCreate($"nianton@gmail.com", Guid.NewGuid().ToString()).Result;
+            var uri = repository.UploadPassport(model.Id, "image/jpg", File.OpenRead("images/passport.jpg")).Result;
             Assert.IsNotNull(uri);
         }
 
         [TestMethod]
         public void TestSelfieUpload()
         {
-            var uri = repository.UploadSelfie(Guid.NewGuid(), "image/jpg", File.OpenRead("images/selfie.jpg")).Result;
+            var model = repository.GetOrCreate($"nianton@gmail.com", Guid.NewGuid().ToString()).Result;
+            var uri = repository.UploadSelfie(model.Id, "image/jpg", File.OpenRead("images/selfie.jpg")).Result;
             Assert.IsNotNull(uri);
         }
 
