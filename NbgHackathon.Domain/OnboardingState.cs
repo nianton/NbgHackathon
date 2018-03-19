@@ -55,13 +55,16 @@ namespace NbgHackathon.Domain
                 Id = entity.Properties[nameof(Id)].GuidValue.Value,
                 BotSessionId = entity.Properties.TryGetValue(nameof(BotSessionId), out var botSessionProperty) ? botSessionProperty.StringValue : null,
                 UserEmail = entity.Properties[nameof(UserEmail)].StringValue,
+                PassportFaceId = entity.Properties.TryGetValue(nameof(PassportFaceId), out var passportFaceId) ? passportFaceId.StringValue : null,
+                SelfieFaceId = entity.Properties.TryGetValue(nameof(SelfieFaceId), out var selfieFaceId) ? selfieFaceId.StringValue : null,
                 CreatedAt = entity.Properties[nameof(CreatedAt)].DateTimeOffsetValue.Value,
                 UpdatedAt = entity.Properties[nameof(UpdatedAt)].DateTimeOffsetValue.Value,
                 PassportValidation = entity.Properties.ReadEnum<PassportValidationState>(nameof(PassportValidation)).GetValueOrDefault(),
                 PassportInfo = entity.Properties.ReadObject<PassportInformation>(nameof(PassportInfo)),
                 EmotionValidation = entity.Properties.ReadEnum<EmotionValidationState>(nameof(EmotionValidation)).GetValueOrDefault(),
                 EmotionScores = entity.Properties.ReadObject<EmotionScores>(nameof(EmotionScores)),
-                RequestedEmotion = entity.Properties.ReadEnum<FaceEmotion>(nameof(RequestedEmotion))
+                RequestedEmotion = entity.Properties.ReadEnum<FaceEmotion>(nameof(RequestedEmotion)),
+                FaceValidation = entity.Properties.ReadEnum<FaceComparisonValidationState>(nameof(FaceValidation)).GetValueOrDefault(),
             };
 
             return model;

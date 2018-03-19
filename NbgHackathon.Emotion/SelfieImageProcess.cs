@@ -16,7 +16,7 @@ namespace NbgHackathon.Emotion
         const float MinimumThreshold = 0.7f;
 
         [FunctionName(FunctionName)]
-        public static async Task Run([BlobTrigger("selfies/{fileName}.{extension}", Connection = "MainApplicationStorage")]Stream myBlob, string fileName, string fileExtension, TraceWriter log)
+        public static async Task Run([BlobTrigger("selfies/{fileName}.{fileExtension}", Connection = "MainApplicationStorage")]Stream myBlob, string fileName, string fileExtension, TraceWriter log)
         {
             log.Info($"Executing {FunctionName} for {fileName}.{fileExtension} (size: {myBlob.Length}).");
             try
