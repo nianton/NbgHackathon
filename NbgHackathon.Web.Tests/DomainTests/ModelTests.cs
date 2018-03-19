@@ -38,7 +38,7 @@ namespace NbgHackathon.Web.Tests.Domains
                 Surname = "Antoniou",
                 Nationality = "GRC",
                 PassportNumber = "P1230312093"
-            });
+            }, $"{Guid.NewGuid()}");
 
             var updatedModel = repository.Update(model).Result;
             Assert.IsNotNull(model);
