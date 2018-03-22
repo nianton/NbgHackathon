@@ -1,11 +1,18 @@
 { // Copy as local.settings.json, if settings file does not exist
+  // DO NOT put application secrets here byt on the local.settings.json
+  // file which will not be committed on the source control.
   "IsEncrypted": false,
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "AzureWebJobsDashboard": "UseDevelopmentStorage=true",
     "MainApplicationStorage": "UseDevelopmentStorage=true",
+
+    // Passport parser uses ABBYY Cloud OCR to obtain credentials
+    // register here for a trial account: https://cloud.ocrsdk.com/Account/Register
     "CloudOcrApplicationId": "xxx",
     "CloudOcrPassword": "xxx",
+
+    // MS Congnitive Service Face API key and endpoint
     "FaceApiSubscriptionKey": "xxx",
     "FaceApiEndpoint": "https://westeurope.api.cognitive.microsoft.com/face/v1.0"
   },
